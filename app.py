@@ -123,7 +123,6 @@ def click(clickData):
 
 
 # This updates the map given the dropdowns and the value entered into the search bar
-# TODO change news-map
 @app.callback(  
     Output('news-map', 'figure'),
     Input('value-enter', 'n_clicks'),
@@ -146,6 +145,8 @@ def update_plot(n_clicks, input_value):
             rel_rows.append(search_bar(input_value, i))
         tmp = tmp[rel_rows]
 
+    tmp['title'] = tmp.title.str.wrap(30).apply(lambda x: x.replace('\n', '<br>'))
+    tmp['body'] = tmp.body.str.wrap(30).apply(lambda x: x.replace('\n', '<br>'))  
     fig = px.scatter(tmp, x = 'umap1', y = 'umap2', hover_data = ['title', 'body', 'keyword1', 'keyword2', 'keyword3', 'keyword4', 'keyword5'], color = 'cluster', title = 'Context similarity map of results')
     
     # DarkSlateGrey
